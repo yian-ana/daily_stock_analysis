@@ -4,8 +4,25 @@ Shared data parsing and normalization helpers.
 """
 
 import json
+import logging
 import math
 from typing import Any, Dict, List, Optional, Tuple
+
+
+def position_advice_mapping(value: Any) -> Dict[str, Any]:
+    """Read structured position advice without guessing from malformed LLM text.
+
+    Invalid optional advice is omitted from position-specific report sections;
+    other analysis fields and the original stored payload remain unchanged.
+    """
+    if isinstance(value, dict):
+        return value
+    if value is not None:
+        logging.getLogger(__name__).warning(
+            "Ignoring malformed core_conclusion.position_advice: expected dict, got %s",
+            type(value).__name__,
+        )
+    return {}
 
 
 _MODEL_PLACEHOLDER_VALUES = {"unknown", "error", "none", "null", "n/a"}

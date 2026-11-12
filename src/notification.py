@@ -64,6 +64,7 @@ from bot.models import BotMessage
 from src.utils.sanitize import sanitize_diagnostic_text
 from src.formatters import strip_hidden_markdown_metadata
 from src.utils.data_processing import (
+    position_advice_mapping,
     signal_attribution_has_content,
     signal_attribution_weight_items,
     normalize_model_used,
@@ -1393,7 +1394,7 @@ class NotificationService(
                 core = dashboard.get('core_conclusion', {}) if dashboard else {}
                 one_sentence = core.get('one_sentence', result.analysis_summary)
                 time_sense = core.get('time_sensitivity', labels['default_time_sensitivity'])
-                pos_advice = core.get('position_advice', {})
+                pos_advice = position_advice_mapping(core.get('position_advice'))
 
                 report_lines.extend([
                     f"### 📌 {labels['core_conclusion_heading']}",
@@ -1756,7 +1757,7 @@ class NotificationService(
                         lines.append("")
 
                 # 持仓建议
-                pos_advice = core.get('position_advice', {}) if core else {}
+                pos_advice = position_advice_mapping(core.get('position_advice')) if core else {}
                 if pos_advice:
                     no_pos = str(pos_advice.get('no_position', ''))
                     has_pos = str(pos_advice.get('has_position', ''))
@@ -2096,7 +2097,7 @@ class NotificationService(
             lines.append("")
 
         # 持仓建议
-        pos_advice = core.get('position_advice', {}) if core else {}
+        pos_advice = position_advice_mapping(core.get('position_advice')) if core else {}
         if pos_advice:
             lines.extend([
                 f"### 💼 {labels['position_advice_heading']}",

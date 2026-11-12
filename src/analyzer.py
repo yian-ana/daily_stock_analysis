@@ -335,7 +335,7 @@ class _AllModelsFailedError(Exception):
         self.last_usage = last_usage or {}
 
 
-from src.utils.data_processing import normalize_report_signal_attribution
+from src.utils.data_processing import normalize_report_signal_attribution, position_advice_mapping
 
 
 def check_content_integrity(
@@ -1865,7 +1865,7 @@ class AnalysisResult:
     def get_position_advice(self, has_position: bool = False) -> str:
         """获取持仓建议"""
         if self.dashboard and 'core_conclusion' in self.dashboard:
-            pos_advice = self.dashboard['core_conclusion'].get('position_advice', {})
+            pos_advice = position_advice_mapping(self.dashboard['core_conclusion'].get('position_advice'))
             if has_position:
                 return pos_advice.get('has_position', self.operation_advice)
             return pos_advice.get('no_position', self.operation_advice)

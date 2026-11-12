@@ -1189,6 +1189,8 @@ FEISHU_WEBHOOK_URL=https://open.feishu.cn/open-apis/bot/v2/hook/your_hook_token
 更完整的图文排查请看 [docs/bot/feishu-bot-config.md](bot/feishu-bot-config.md)。
 ### Telegram
 
+推送排障先检查 Actions 是否生成了当天的运行记录，再检查报告生成和通知发送日志。`Telegram 消息发送成功` 只说明对应消息已被 Telegram 接收，不代表同次运行的所有个股报告都成功生成。若 AI 的 `core_conclusion.position_advice` 不是字典，报告会省略该持仓分类建议并记录 `Ignoring malformed core_conclusion.position_advice`，保留其他分析内容，不从普通文本推断空仓或持仓操作。
+
 1. 与 @BotFather 对话创建 Bot
 2. 获取 Bot Token
 3. 获取 Chat ID（可通过 @userinfobot）

@@ -59,6 +59,7 @@ from src.schemas.decision_action import (
 from src.schemas.decision_scale import extract_decision_guardrail_reason
 from src.utils.sniper_points import find_sniper_points
 from src.utils.data_processing import (
+    position_advice_mapping,
     extract_realtime_detail_fields,
     normalize_model_used,
     parse_json_field,
@@ -1207,7 +1208,7 @@ class HistoryService:
         core = dashboard.get('core_conclusion', {}) if dashboard else {}
         one_sentence = core.get('one_sentence', result.analysis_summary)
         time_sense = core.get('time_sensitivity', labels['default_time_sensitivity'])
-        pos_advice = core.get('position_advice', {})
+        pos_advice = position_advice_mapping(core.get('position_advice'))
 
         report_lines.extend([
             f"### 📌 {labels['core_conclusion_heading']}",
